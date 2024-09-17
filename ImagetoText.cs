@@ -1,18 +1,5 @@
-#pragma warning disable SKEXP0010
-#pragma warning disable SKEXP0110
-#pragma warning disable SKEXP0001
-using System;
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Connectors.OpenAI;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.SemanticKernel.Embeddings;
-using Microsoft.SemanticKernel.AudioToText;
-using Microsoft.Extensions.Hosting;
-using Microsoft.SemanticKernel.Agents.OpenAI;
-using Microsoft.SemanticKernel.Agents;
 using Microsoft.SemanticKernel.ChatCompletion;
-using Microsoft.CognitiveServices.Speech;
-using Microsoft.CognitiveServices.Speech.Audio;
 
 namespace MultiModalCopilot;
 
@@ -30,12 +17,12 @@ public class ImagetoText()
         // Create kernel
         var kernel = kernelBuilder.Build();
 
-        var chat = kernel.GetRequiredService<IChatCompletionService>();
-
-        var history = new ChatHistory("You are a useful assistant that helps to describe an image. Ask questions about the image to get answers.");
+        var gpt_svc = kernel.GetRequiredService<IChatCompletionService>();
 
         while (true)
         {
+            var chat = new ChatHistory("You are a useful assistant that helps to answer questions about an image in a single sentence.");
+            
             var imageContent = new ImageContent();
 
             Console.Write("Enter the image URL : ");
@@ -56,12 +43,15 @@ public class ImagetoText()
                 imageContent
             };
 
-            history.AddUserMessage(collectionItems);
+            chat.AddUserMessage(collectionItems);
 
-            var result = await chat.GetChatMessageContentsAsync(history);
+            var result = await gpt_svc.GetChatMessageContentAsync(chat);
+
             Console.WriteLine("\n Image description : ");
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine(result[^1].Content);
+            
+            Console.WriteLine(result.Content);
+
             Console.ResetColor();
 
             Console.Write("\n Do you want to describe another image? (Y/N) : ");

@@ -22,8 +22,6 @@ public class AudiotoText()
 
         var chat = kernel.GetRequiredService<IAudioToTextService>();
 
-        var history = new ChatHistory("You are a useful assistant that helps to translate an audio to French. Ask questions about the image to get answers.");
-
         while (true)
         {
             Console.Write("Where is the audio file located? : ");
@@ -38,12 +36,12 @@ public class AudiotoText()
 
             var textContent = await chat.GetTextContentAsync(audioContent);
 
-            Console.Write("\n Audio description : ");
+            Console.Write("\n Audio transcription : ");
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine(textContent.Text);
             Console.ResetColor();
 
-            Console.Write("\n Do you want to describe another audio? (Y/N) : ");
+            Console.Write("\n Do you want to transcribe another audio? (Y/N) : ");
             Console.ForegroundColor = ConsoleColor.Green;
             var response = Console.ReadLine();
             Console.ResetColor();

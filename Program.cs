@@ -4,7 +4,7 @@ Console.WriteLine("Select an option:");
 Console.WriteLine("1. Image to Text");
 Console.WriteLine("2. Video to Text");
 Console.WriteLine("3. Audio to Text");
-Console.WriteLine("4. Text to Image");
+Console.WriteLine("4. Speech Translation");
 
 string option = Console.ReadLine() ?? string.Empty;
 Console.Clear();
@@ -27,9 +27,9 @@ switch (option)
         await AudiotoText.AudiotoTextOpenAI();
         break;
     case "4":
-        Console.WriteLine("Text to Image option selected");
+        Console.WriteLine("Speech Translation option selected");
         Console.WriteLine("--------------------------------- \n");
-        await TexttoImage.TexttoImageOpenAI();
+        await SpeechTranslation.SpeechTranslationAI();
         break;
     default:
         Console.WriteLine("Invalid option selected");
